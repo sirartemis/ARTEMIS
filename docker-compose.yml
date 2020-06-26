@@ -1,0 +1,43 @@
+version: '3'
+
+volumes:
+    pgdata:
+        driver: local
+services:
+    nginx:
+        restart: always
+        image: nginx:latest
+        expose:
+          - 8080
+        ports:
+          - "80:8080"
+        volumes:
+            - ./composeexample/static:/srv/www/composeexample/static
+            - ./composeexample/media:/srv/www/composeexample/media
+            - ./composeexample/logs:/srv/www/composeexample/logs
+            - ./docker/nginx:/etc/nginx/conf.d
+        depends_on:
+            - python
+    python:
+        restart: always
+        build:
+            context: .
+            dockerfile: docker/python/Dockerfile
+        volumes:
+            - ./composeexample:/srv/www/composeexample
+        expose:
+          - 8000
+        ports:
+            - 8000:8000
+        command: "gunicorn -c gunicorn.py composeexample.wsgi"
+    postgres:
+        image: postgres
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: postgres
+            PGDATA: /var/lib/postgresql/data
+        volumes:
+            - pgdata:/var/lib/postgresql.data
