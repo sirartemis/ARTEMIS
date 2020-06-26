@@ -1,0 +1,1 @@
+2020/06/25 17:02:22 [error] 19#19: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 109.172.15.11, server: localhost, request: "GET / HTTP/1.1", upstream: "http://192.168.16.2:8000/", host: "35.228.140.62"
