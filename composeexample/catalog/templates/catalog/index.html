@@ -1,0 +1,54 @@
+{% extends "blog/base.html" %}
+
+{% block title %}<title> LocalLibrary Homepage</title>{% endblock %}
+
+{% block content %}
+	<div class="row justify-content-md-center">
+		<div class="col col-md-2">
+			<nav class="navbar-nav">
+				<div class="list-group list-group-flush">
+					{% if user.is_authenticated %}
+						<a class="list-group-item
+							  list-group-item-action
+							  list-group-item-dark" href="{% url 'catalog:my-borrowed' %}">My Borrowed</a>
+					{% endif %}
+					{% if perms.catalog.can_mark_returned %}
+						<a class="list-group-item
+							  list-group-item-action
+							  list-group-item-dark" href="{% url 'catalog:borrowed' %}">All Borrowed</a>
+					{% endif %}
+						<a class="list-group-item
+							  list-group-item-action
+							  list-group-item-dark" href="{% url 'catalog:books' %}">All books</a>
+						<a class="list-group-item
+							  list-group-item-action
+							  list-group-item-dark" href="{% url 'catalog:authors' %}">All authors</a>
+
+				</div>
+			</nav></div>
+		<div class="col-5">
+<h1 class="display-4">Local Library Home</h1>
+
+<p class="lead">Welcome to <em>LocalLibrary</em>, a very basic Django website developed as a tutorial example on the Mozilla Developer Network.</p>
+	<h2>Dynamic content</h2>
+
+	<p> The Library has the following record counts:</p>
+	<dl class="row py-3">
+		<dt class="col-sm-3">Books:</dt>
+		<dd class="col-sm-9"><span class="badge badge-dark">{{ num_books }}</span></dd>
+
+		<dt class="col-sm-3">Copies:</dt>
+		<dd class="col-sm-9"><span class="badge badge-info">{{ num_instances }}</span></dd>
+
+		<dt class="col-sm-3">Copies available:</dt>
+		<dd class="col-sm-9"><span class="badge badge-success">{{ num_instances_available }}</span></dd>
+
+		<dt class="col-sm-3">Authors:</dt>
+		<dd class="col-sm-9"><span class="badge badge-info">{{ num_authors }}</span></dd>
+	</dl>
+
+	<p>You have visited this page <span class="badge badge-primary"> {{ num_visits }}</span> {% if num_visits == 1 %} time{% else %}times{% endif %}.</p>
+		</div>
+		<div class="col"></div>
+	</div>
+{% endblock %}

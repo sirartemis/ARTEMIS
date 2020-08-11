@@ -1,0 +1,50 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+	<div class="row justify-content-md-center">
+		<div class="col col-md-2">
+			<nav class="nav-bar-nav">
+				<div class="list-group list-group-flush">
+
+					{% if user.is_authenticated %}
+						<a class="list-group-item
+							  list-group-item-action
+							  list-group-item-dark" href="{% url 'catalog:my-borrowed' %}">My Borrowed</a>
+					{% endif %}
+					{% if perms.catalog.can_mark_returned %}
+					<a class="list-group-item
+						  list-group-item-action
+						  list-group-item-dark" href="{% url 'catalog:author_create' %}">Create Author</a>
+					{% endif %}
+					<a class="list-group-item
+						  list-group-item-action
+						  list-group-item-dark" href="{% url 'catalog:books' %}">All books</a>
+					<a class="list-group-item
+					 	  list-group-item-action
+						  list-group-item-dark" href="{% url 'catalog:authors' %}">All authors</a>
+				</div>
+			</nav></div>
+			<div class="col-5">
+	<h1 class="display-4">Author List</h1>
+
+	{% if author_list %}
+	<ul>
+		{% for author in author_list %}
+		<li>
+			<a href="{{ author.get_absolute_url }}">{{ author.last_name }} -- {{ author.first_name }}</a>
+			{% if perms.catalog.can_mark_returned %}
+			<a class="badge badge-success" href="{% url 'catalog:author_update' pk=author.pk %}">Edit</a>
+			<a class="badge badge-danger" href="{% url 'catalog:author_delete' pk=author.pk %}">Delete</a>
+			{% endif %}
+		</li>
+		{% endfor %}
+
+
+	</ul>
+	{% else %}
+		<p>There are no authors in the library.</p>
+	{% endif %}
+			</div>
+			<div class="col"></div>
+	</div>
+{% endblock %}

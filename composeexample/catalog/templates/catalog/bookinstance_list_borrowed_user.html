@@ -1,0 +1,42 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+	<div class="row justify-content-md-center">
+		<div class="col col-md-2">
+			<nav class="navbar-nav">
+				<div class="list-group list-group-flush">
+					{% if user.is_authenticated %}
+						<a class="list-group-item
+							  list-group-item-action
+							  list-group-item-dark" href="{% url 'catalog:my-borrowed' %}">My Borrowed</a>
+						{% endif %}
+						<a class="list-group-item
+							  list-group-item-action
+							  list-group-item-dark" href="{% url 'catalog:books' %}">All books</a>
+						<a class="list-group-item
+							  list-group-item-action
+							  list-group-item-dark" href="{% url 'catalog:authors' %}">All authors</a>
+
+
+				</div>
+			</nav></div>
+				<div class="col-5">
+	<h1>Borrowed books</h1>
+
+	{% if bookinstance_list %}
+	<ul>
+
+		{% for bookinst in bookinstance_list %}
+		<li class="{% if bookinst.is_overdue %}text-danger{% endif %}">
+			<a href="{% url 'catalog:book-detail' bookinst.book.pk %}">{{bookinst.book.title}}</a> ({{ bookinst.due_back }})
+		</li>
+		{% endfor %}
+	</ul>
+
+	{% else %}
+	<p>There are no books borrowed.</p>
+	{% endif %}
+				</div>
+				<div class="col"></div>
+			</div>
+{% endblock %}
